@@ -1,56 +1,60 @@
-# Deployment (always-on, free)
+# Deployment (always-on, free, no credit card)
 
-## URLs to share with interviewers
+**Do not use Render or PythonAnywhere** — both require payment. Use **Railway** (different product: free trial with $5 credit, **no card**).
 
-| | URL |
-|--|-----|
-| **Application** | https://rahulagg1804.github.io/truck-trip-details/ |
-| **API** | https://truck-trip-api.onrender.com *(after Render setup below)* |
+## URL to share with interviewers (one link)
 
-The frontend on GitHub Pages is already always-on. You only need to deploy the API once on Render (free, no credit card).
+After Railway setup below, share your Railway app URL, e.g.:
+
+`https://truck-trip-details-production.up.railway.app`
+
+That single URL serves the React UI and the Django API (no Mac, no tunnel).
+
+GitHub Pages (https://rahulagg1804.github.io/truck-trip-details/) stays available as a backup frontend only.
 
 ---
 
-## One-time API setup on Render (~10 minutes)
+## One-time setup on Railway (~10 minutes)
 
-1. Sign up: https://dashboard.render.com/ (free tier, **no credit card** required)
-2. **New +** → **Blueprint** → connect GitHub repo `rahulagg1804/truck-trip-details`
-3. Render reads `render.yaml` and creates service **truck-trip-api**
-4. Wait until the deploy is **Live** (first build ~5–10 min)
-5. Open the service URL (default): **https://truck-trip-api.onrender.com**
-6. Verify:
+1. Sign up: https://railway.com/ — **Sign in with GitHub** (no credit card on free trial)
+2. Verify for full network access (needed for geocoding): https://railway.com/verify
+3. **New Project** → **Deploy from GitHub repo** → `rahulagg1804/truck-trip-details`
+4. Railway reads `railway.toml` at the repo root and builds frontend + backend
+5. Open the service → **Variables** → add:
+   - `DEBUG` = `false`
+   - `ALLOWED_HOSTS` = `*`
+   - `GEOCODING_ENABLED` = `true`
+6. **Settings → Networking → Generate Domain** (if not already created)
+7. Wait until deploy status is **Active** / green
+8. Test:
    ```bash
-   curl -s https://truck-trip-api.onrender.com/api/health/
+   curl -s https://YOUR-RAILWAY-DOMAIN.up.railway.app/api/health/
    ```
    Expected: `{"status":"ok"}`
-7. Point the frontend at the API — GitHub repo **Settings → Secrets and variables → Actions → Variables**:
-   - Name: `VITE_API_URL`
-   - Value: `https://truck-trip-api.onrender.com`
-8. **Actions → Deploy to GitHub Pages → Run workflow** (or push to `main`)
+9. Open the same domain in a browser and plan a test trip
 
-**Note:** Free Render services sleep after ~15 minutes of no traffic. The first request after sleep takes ~30–60 seconds to wake up; then the app works normally. Fine for interview demos.
+**Trial:** $5 credit for ~30 days — enough for an interview project. No sleep timer (unlike Render free tier).
 
 ---
 
-## Frontend (GitHub Pages)
+## Optional: GitHub Pages + Railway API only
 
-Already configured in `.github/workflows/deploy.yml` — deploys on every push to `main`.
+If you prefer the GitHub Pages URL for the UI:
 
-1. **Settings → Pages → Source: GitHub Actions**
-2. Site: https://rahulagg1804.github.io/truck-trip-details/
+1. Deploy on Railway with **Root Directory** = `backend` (API only)
+2. Set GitHub variable `VITE_API_URL` = your Railway API URL (no `/api` suffix)
+3. Re-run **Deploy to GitHub Pages**
 
 ---
 
-## Optional: Hugging Face Spaces (backup)
+## Hugging Face (not recommended)
 
-If Render is unavailable, use **Actions → Deploy API to Hugging Face** (requires `HF_TOKEN` secret). Default Space name: `truck-trip-planner-api`.
+The Space was paused (`Flagged as abusive` from a bad deploy that included `venv/`). Use Railway instead.
 
 ---
 
 ## Verify end-to-end
 
-1. `curl -s https://truck-trip-api.onrender.com/api/health/`
-2. Open https://rahulagg1804.github.io/truck-trip-details/
-3. Plan a trip (e.g. Chicago → Indianapolis → Nashville)
-
-If the UI loads but planning fails, check the browser Network tab — `VITE_API_URL` must match your live Render URL.
+1. Health: `curl -s https://YOUR-DOMAIN/api/health/`
+2. UI: open your Railway domain
+3. Trip: Chicago → Indianapolis → Nashville

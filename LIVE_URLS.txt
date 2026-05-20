@@ -1,10 +1,10 @@
 Truck Trip Planner
 ==================
 
-Application (always on)
+Primary (set after Railway deploy — one URL for UI + API)
+https://YOUR-SERVICE.up.railway.app
+
+Backup frontend (GitHub Pages)
 https://rahulagg1804.github.io/truck-trip-details/
 
-API (deploy on Render — see DEPLOY.md)
-https://truck-trip-api.onrender.com
-
-Deployment: DEPLOY.md
+Setup: DEPLOY.md (Railway — free trial, no credit card)

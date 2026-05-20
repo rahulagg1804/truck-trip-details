@@ -69,4 +69,4 @@ backend/trips/
 
 ## Deployment
 
-See [DEPLOY.md](DEPLOY.md) for always-on hosting: GitHub Pages (frontend) + Render (API, free).
+See [DEPLOY.md](DEPLOY.md) for always-on hosting on Railway (free trial, no credit card).
