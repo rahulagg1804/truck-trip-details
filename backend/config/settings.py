@@ -14,6 +14,7 @@ if _default_hosts.strip() == "*":
     ALLOWED_HOSTS = [
         "localhost",
         "127.0.0.1",
+        ".onrender.com",
         ".hf.space",
         ".lhr.life",
         ".loca.lt",

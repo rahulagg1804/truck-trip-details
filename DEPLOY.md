@@ -1,49 +1,56 @@
-# Deployment
+# Deployment (always-on, free)
 
-## URLs
+## URLs to share with interviewers
 
-| Service | URL |
-|---------|-----|
-| Application | https://rahulagg1804.github.io/truck-trip-details/ |
-| API | https://rahulagg1804-truck-trip-api.hf.space |
+| | URL |
+|--|-----|
+| **Application** | https://rahulagg1804.github.io/truck-trip-details/ |
+| **API** | https://truck-trip-api.onrender.com *(after Render setup below)* |
 
-The frontend deploys on push to `main` via GitHub Actions. The API runs on a free **Hugging Face Space** (Docker).
+The frontend on GitHub Pages is already always-on. You only need to deploy the API once on Render (free, no credit card).
 
 ---
 
-## Backend (Hugging Face Spaces)
+## One-time API setup on Render (~10 minutes)
 
-1. Create a free account at https://huggingface.co/join
-2. Create an access token: **Settings → Access Tokens → New token** (role: **write**)
-3. In this GitHub repo: **Settings → Secrets and variables → Actions → New repository secret**
-   - Name: `HF_TOKEN`
-   - Value: your Hugging Face token
-4. **Actions → Deploy API to Hugging Face → Run workflow**
-5. Wait for the Space to build (~3–5 min). Open https://huggingface.co/spaces/rahulagg1804/truck-trip-api
-6. When the Space is **Running**, set the repository variable (optional if using the default URL):
-   - **Settings → Secrets and variables → Actions → Variables**
+1. Sign up: https://dashboard.render.com/ (free tier, **no credit card** required)
+2. **New +** → **Blueprint** → connect GitHub repo `rahulagg1804/truck-trip-details`
+3. Render reads `render.yaml` and creates service **truck-trip-api**
+4. Wait until the deploy is **Live** (first build ~5–10 min)
+5. Open the service URL (default): **https://truck-trip-api.onrender.com**
+6. Verify:
+   ```bash
+   curl -s https://truck-trip-api.onrender.com/api/health/
+   ```
+   Expected: `{"status":"ok"}`
+7. Point the frontend at the API — GitHub repo **Settings → Secrets and variables → Actions → Variables**:
    - Name: `VITE_API_URL`
-   - Value: `https://rahulagg1804-truck-trip-api.hf.space`
-7. Re-run **Deploy to GitHub Pages** (or push to `main`) so the frontend picks up the API URL
+   - Value: `https://truck-trip-api.onrender.com`
+8. **Actions → Deploy to GitHub Pages → Run workflow** (or push to `main`)
 
-Health check: `https://rahulagg1804-truck-trip-api.hf.space/api/health/`
+**Note:** Free Render services sleep after ~15 minutes of no traffic. The first request after sleep takes ~30–60 seconds to wake up; then the app works normally. Fine for interview demos.
 
 ---
 
 ## Frontend (GitHub Pages)
 
-Configured in `.github/workflows/deploy.yml`.
+Already configured in `.github/workflows/deploy.yml` — deploys on every push to `main`.
 
-1. Push to `main`
-2. **Settings → Pages → Build and deployment → Source: GitHub Actions**
-3. Site: https://rahulagg1804.github.io/truck-trip-details/
+1. **Settings → Pages → Source: GitHub Actions**
+2. Site: https://rahulagg1804.github.io/truck-trip-details/
+
+---
+
+## Optional: Hugging Face Spaces (backup)
+
+If Render is unavailable, use **Actions → Deploy API to Hugging Face** (requires `HF_TOKEN` secret). Default Space name: `truck-trip-planner-api`.
 
 ---
 
 ## Verify end-to-end
 
-```bash
-curl -s https://rahulagg1804-truck-trip-api.hf.space/api/health/
-```
+1. `curl -s https://truck-trip-api.onrender.com/api/health/`
+2. Open https://rahulagg1804.github.io/truck-trip-details/
+3. Plan a trip (e.g. Chicago → Indianapolis → Nashville)
 
-Then open the application URL, enter cities (e.g. Chicago → Nashville), and confirm the map and ELD logs load.
+If the UI loads but planning fails, check the browser Network tab — `VITE_API_URL` must match your live Render URL.

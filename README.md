@@ -69,4 +69,4 @@ backend/trips/
 
 ## Deployment
 
-See [DEPLOY.md](DEPLOY.md) for GitHub Pages (frontend) and Hugging Face Spaces (API, free).
+See [DEPLOY.md](DEPLOY.md) for always-on hosting: GitHub Pages (frontend) + Render (API, free).
