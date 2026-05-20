@@ -24,4 +24,10 @@ ENV GEOCODING_ENABLED=true
 
 EXPOSE 8080
 
-CMD gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8080} --timeout 120 --workers 1
+CMD gunicorn config.wsgi:application \
+    --bind 0.0.0.0:${PORT:-8080} \
+    --timeout 120 \
+    --workers 1 \
+    --access-logfile - \
+    --error-logfile - \
+    --capture-output

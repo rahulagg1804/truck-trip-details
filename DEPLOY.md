@@ -58,3 +58,15 @@ The Space was paused (`Flagged as abusive` from a bad deploy that included `venv
 1. Health: `curl -s https://YOUR-DOMAIN/api/health/`
 2. UI: open your Railway domain
 3. Trip: Chicago → Indianapolis → Nashville
+
+---
+
+## Logs look like an error but say "Listening at :8080"?
+
+That is **success**. Gunicorn is running. If the site still fails:
+
+1. **Public port** must match gunicorn: use **8080** (or whatever `PORT` shows in Railway Variables).
+2. Open `https://YOUR-DOMAIN.up.railway.app/api/health/` — should return `{"status":"ok"}`.
+3. Then open `https://YOUR-DOMAIN.up.railway.app/` (root URL, not GitHub Pages).
+4. If trip planning fails: complete https://railway.com/verify (GitHub) so outbound geocoding works on the free trial.
+5. In Railway **Deployments**, check for a red **health check failed** line *after* startup — paste that message if you need help.
