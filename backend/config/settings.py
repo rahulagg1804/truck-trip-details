@@ -43,7 +43,14 @@ CORS_ALLOWED_ORIGINS = [
     ).split(",")
     if o.strip()
 ]
-CORS_ALLOW_ALL_ORIGINS = DEBUG and not CORS_ALLOWED_ORIGINS
+CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "").lower() in (
+    "true",
+    "1",
+    "yes",
+)
+
+if not CORS_ALLOW_ALL_ORIGINS and not CORS_ALLOWED_ORIGINS and DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
