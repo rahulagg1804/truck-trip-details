@@ -4,7 +4,7 @@ Truck Trip Planner
 Application
 https://rahulagg1804.github.io/truck-trip-details/
 
-API (after Hugging Face deploy)
+API
 https://rahulagg1804-truck-trip-api.hf.space
 
 Deployment instructions: DEPLOY.md

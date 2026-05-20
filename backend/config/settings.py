@@ -14,12 +14,9 @@ if _default_hosts.strip() == "*":
     ALLOWED_HOSTS = [
         "localhost",
         "127.0.0.1",
-        ".trycloudflare.com",
-        ".loca.lt",
-        ".vercel.app",
-        ".onrender.com",
-        ".up.railway.app",
         ".hf.space",
+        ".lhr.life",
+        ".loca.lt",
     ]
 else:
     ALLOWED_HOSTS = [h.strip() for h in _default_hosts.split(",") if h.strip()]
