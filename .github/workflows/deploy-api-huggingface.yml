@@ -1,0 +1,73 @@
+name: Deploy API to Hugging Face
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HF_USERNAME: ${{ vars.HF_USERNAME || 'rahulagg1804' }}
+      HF_SPACE: truck-trip-api
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install huggingface_hub
+        run: pip install "huggingface_hub>=0.26"
+
+      - name: Prepare Space files
+        run: |
+          mkdir -p hf-space
+          cp deploy/Dockerfile.hf hf-space/Dockerfile
+          cp -r backend hf-space/backend
+          cat > hf-space/README.md <<EOF
+          ---
+          title: Truck Trip API
+          sdk: docker
+          app_port: 7860
+          ---
+          Django API for the Truck Trip Planner (GitHub Pages frontend).
+          EOF
+
+      - name: Create or update Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::Add repository secret HF_TOKEN (huggingface.co → Settings → Access Tokens, write role)"
+            exit 1
+          fi
+          python <<'PY'
+          import os
+          from huggingface_hub import HfApi, upload_folder
+
+          token = os.environ["HF_TOKEN"]
+          user = os.environ["HF_USERNAME"]
+          space = os.environ["HF_SPACE"]
+          repo_id = f"{user}/{space}"
+          api = HfApi(token=token)
+
+          try:
+              api.create_repo(
+                  repo_id,
+                  repo_type="space",
+                  space_sdk="docker",
+                  exist_ok=True,
+              )
+          except Exception as e:
+              print("create_repo:", e)
+
+          upload_folder(
+              folder_path="hf-space",
+              repo_id=repo_id,
+              repo_type="space",
+              token=token,
+              commit_message="Deploy API from GitHub Actions",
+          )
+          print(f"Space: https://huggingface.co/spaces/{repo_id}")
+          print(f"API URL: https://{user}-{space}.hf.space")
+          PY

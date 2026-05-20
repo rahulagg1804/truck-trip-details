@@ -18,7 +18,8 @@ if _default_hosts.strip() == "*":
         ".loca.lt",
         ".vercel.app",
         ".onrender.com",
-        ".pythonanywhere.com",
+        ".up.railway.app",
+        ".hf.space",
     ]
 else:
     ALLOWED_HOSTS = [h.strip() for h in _default_hosts.split(",") if h.strip()]
