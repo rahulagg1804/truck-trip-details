@@ -69,4 +69,5 @@ That is **success**. Gunicorn is running. If the site still fails:
 2. Open `https://YOUR-DOMAIN.up.railway.app/api/health/` — should return `{"status":"ok"}`.
 3. Then open `https://YOUR-DOMAIN.up.railway.app/` (root URL, not GitHub Pages).
 4. If trip planning fails: complete https://railway.com/verify (GitHub) so outbound geocoding works on the free trial.
-5. In Railway **Deployments**, check for a red **health check failed** line *after* startup — paste that message if you need help.
+5. **Healthcheck failure?** Railway probes with host `healthcheck.railway.app` — the app now allows that. Ensure `ALLOWED_HOSTS=*` in Variables, redeploy, health path `/health/`.
+6. In Railway **Deployments**, check for a red **health check failed** line *after* startup — paste that message if you need help.

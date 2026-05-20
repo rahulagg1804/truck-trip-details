@@ -14,7 +14,9 @@ if _default_hosts.strip() == "*":
     ALLOWED_HOSTS = [
         "localhost",
         "127.0.0.1",
+        "healthcheck.railway.app",
         ".up.railway.app",
+        ".railway.app",
         ".hf.space",
         ".lhr.life",
         ".loca.lt",
