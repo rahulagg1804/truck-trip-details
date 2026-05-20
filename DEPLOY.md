@@ -25,6 +25,10 @@ curl -sL https://raw.githubusercontent.com/rahulagg1804/truck-trip-details/main/
 5. Replace the WSGI file with the contents of `deploy/pythonanywhere_wsgi.py` (update `YOUR_USERNAME`)
 6. Click **Reload**
 
+**CORS errors from GitHub Pages:** the WSGI file must allow `https://rahulagg1804.github.io` (no path). Use `deploy/pythonanywhere_wsgi.py` as-is, then **Reload**.
+
+**Automated setup (optional):** add GitHub secret `PA_API_TOKEN` from [Account → API Token](https://www.pythonanywhere.com/account/#api_token), then run the **Deploy API to PythonAnywhere** workflow. Or locally: `PA_API_TOKEN=... ./deploy/pa-remote-setup.sh`.
+
 If geocoding or routing fails, allow outbound access to `nominatim.openstreetmap.org` and `router.project-osrm.org` in the Web tab.
 
 Health check: `https://rahulagg1804.pythonanywhere.com/api/health/`

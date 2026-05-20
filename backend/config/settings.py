@@ -43,12 +43,15 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {}
 
+_default_cors = (
+    "http://localhost:5173,"
+    "http://127.0.0.1:5173,"
+    "http://localhost:3000,"
+    "https://rahulagg1804.github.io"
+)
 CORS_ALLOWED_ORIGINS = [
     o.strip()
-    for o in os.getenv(
-        "CORS_ALLOWED_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000",
-    ).split(",")
+    for o in os.getenv("CORS_ALLOWED_ORIGINS", _default_cors).split(",")
     if o.strip()
 ]
 CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "").lower() in (
@@ -56,6 +59,16 @@ CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "").lower() in (
     "1",
     "yes",
 )
+CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "origin",
+    "user-agent",
+    "x-requested-with",
+]
 
 if not CORS_ALLOW_ALL_ORIGINS and not CORS_ALLOWED_ORIGINS and DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
