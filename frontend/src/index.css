@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-slate-950 text-slate-100 antialiased min-h-screen;
+}
+
+input:focus-visible,
+button:focus-visible {
+  @apply outline-none ring-2 ring-amber-500/50;
+}
+
+.leaflet-container {
+  font-family: inherit;
+  border-radius: 0.5rem;
+}
+
+.log-grid-line {
+  stroke: #cbd5e1;
+  stroke-width: 0.5;
+}
+
+.log-duty-line {
+  stroke-width: 2.5;
+  fill: none;
+}
