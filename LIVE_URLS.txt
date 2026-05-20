@@ -1,0 +1,10 @@
+Truck Trip Planner
+==================
+
+Application
+https://rahulagg1804.github.io/truck-trip-details/
+
+API
+https://rahulagg1804.pythonanywhere.com
+
+Deployment instructions: DEPLOY.md

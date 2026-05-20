@@ -1,39 +1,42 @@
-# Deploy
+# Deployment
 
-## Live URLs (update after deploy)
+## URLs
 
-| App | URL |
-|-----|-----|
-| Frontend | _set after Vercel deploy_ |
-| Backend API | _set after Render deploy_ |
+| Service | URL |
+|---------|-----|
+| Application | https://rahulagg1804.github.io/truck-trip-details/ |
+| API | https://rahulagg1804.pythonanywhere.com |
 
-## 1. Backend — Render
+The frontend deploys on push to `main` via GitHub Actions. The API runs on PythonAnywhere.
 
-1. https://dashboard.render.com → **New** → **Blueprint**
-2. Connect repo `rahulagg1804/truck-trip-details`
-3. Apply `render.yaml` (creates API + static site)
-4. For **truck-trip-web**, set env `VITE_API_URL` = `https://truck-trip-api.onrender.com` (your API URL)
-5. Redeploy **truck-trip-web** after setting the variable
+---
 
-## 2. Frontend only — Vercel (alternative)
+## Backend (PythonAnywhere)
+
+1. Create an account at https://www.pythonanywhere.com/
+2. Open **Consoles** → **Bash** and run:
 
 ```bash
-cd frontend
-npx vercel --prod
+curl -sL https://raw.githubusercontent.com/rahulagg1804/truck-trip-details/main/deploy/pa-console-setup.sh | bash
 ```
 
-Set `VITE_API_URL` in Vercel project settings to your Render API URL.
+3. **Web** → **Add a new web app** → Manual configuration → Python 3.10
+4. Set virtualenv: `/home/rahulagg1804/truck-trip-details/backend/venv`
+5. Replace the WSGI file with the contents of `deploy/pythonanywhere_wsgi.py` (update `YOUR_USERNAME`)
+6. Click **Reload**
 
-## 3. CORS
+If geocoding or routing fails, allow outbound access to `nominatim.openstreetmap.org` and `router.project-osrm.org` in the Web tab.
 
-In Render **truck-trip-api** → Environment:
+Health check: `https://rahulagg1804.pythonanywhere.com/api/health/`
 
-```
-CORS_ALLOWED_ORIGINS=https://your-frontend-url.vercel.app
-```
+---
 
-Or for Render static frontend:
+## Frontend (GitHub Pages)
 
-```
-CORS_ALLOWED_ORIGINS=https://truck-trip-web.onrender.com
-```
+Configured in `.github/workflows/deploy.yml`.
+
+1. Push to `main`
+2. In the repository: **Settings** → **Pages** → **Build and deployment** → Source: **GitHub Actions**
+3. When the workflow completes, the site is available at the application URL above
+
+Set the repository variable `VITE_API_URL` if the API hostname differs from the default.

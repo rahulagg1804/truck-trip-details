@@ -67,7 +67,6 @@ backend/trips/
   views.py
 ```
 
-## Deploy
+## Deployment
 
-- Backend: Railway, Render, etc.
-- Frontend: Vercel — set `VITE_API_URL` to the backend URL
+See [DEPLOY.md](DEPLOY.md) for GitHub Pages (frontend) and PythonAnywhere (API) setup.
