@@ -1,11 +1,9 @@
 # Railway — https://railway.com/ (free trial: $5 credit, no credit card)
-# New Project → Deploy from GitHub → select this repo (uses this file automatically)
 
 [build]
-builder = "NIXPACKS"
-buildCommand = "cd frontend && npm ci && npm run build && cd ../backend && pip install -r requirements.txt"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "cd backend && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --workers 1"
 healthcheckPath = "/api/health/"
 restartPolicyType = "ON_FAILURE"

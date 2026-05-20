@@ -1,0 +1,14 @@
+.git
+.github
+backend/venv
+backend/.venv
+frontend/node_modules
+frontend/dist
+**/__pycache__
+**/*.pyc
+.env
+.venv
+hf-space
+*.pdf
+*.docx
+.DS_Store
